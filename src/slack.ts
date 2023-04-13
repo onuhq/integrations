@@ -16,7 +16,7 @@ class SlackClient {
       throw new ValidationError('executionId is not defined');
     }
 
-    if (!apiKey) {
+    if (!apiKey && debugMode !== 'true') {
       throw new ValidationError('apiKey is not defined');
     }
 

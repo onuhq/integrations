@@ -72,5 +72,24 @@ describe('slack', () => {
       '[debug][onu] Slack postMessage request: {"message":"test-message","channelName":"test-channel-name"}'
     );
   });
+
+  it('does not require an api key in debug mode', async () => {
+    const request = {
+      message: 'test-message',
+      channelName: 'test-channel-name',
+    }
+    const logSpy = jest.spyOn(console, 'log');
+    process.env.ONU_INTERNAL__DEBUG_MODE = 'true';
+    process.env.ONU_INTERNAL__EXECUTION_ID = 'test-execution-id';
+
+    await slack.postMessage(request);
+
+    expect(axios.post).not.toHaveBeenCalled();
+
+    // ensure that the debug message is logged
+    expect(logSpy).toHaveBeenCalledWith(
+      '[debug][onu] Slack postMessage request: {"message":"test-message","channelName":"test-channel-name"}'
+    );
+  });
 });
 
